@@ -5,4 +5,5 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.1"]]
   :repl-options {:init-ns my-project.core}
-  :main my-project.core)
+  :main my-project.core
+  :aot [my-project.core])

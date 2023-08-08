@@ -1,4 +1,5 @@
-(ns my-project.core)
+(ns my-project.core
+  (:gen-class))
 
 (defn parse-int [str]
   (Integer. str))
