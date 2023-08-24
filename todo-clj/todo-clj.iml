@@ -26,6 +26,7 @@
     <orderEntry type="library" name="Leiningen: compojure:1.4.0" level="project" />
     <orderEntry type="library" name="Leiningen: crypto-equality:1.0.0" level="project" />
     <orderEntry type="library" name="Leiningen: crypto-random:1.2.0" level="project" />
+    <orderEntry type="library" name="Leiningen: environ:1.0.1" level="project" />
     <orderEntry type="library" name="Leiningen: hiccup:1.0.5" level="project" />
     <orderEntry type="library" name="Leiningen: instaparse:1.4.0" level="project" />
     <orderEntry type="library" name="Leiningen: javax.servlet/javax.servlet-api:3.1.0" level="project" />
@@ -45,6 +46,7 @@
     <orderEntry type="library" name="Leiningen: org.eclipse.jetty/jetty-server:9.2.10.v20150310" level="project" />
     <orderEntry type="library" name="Leiningen: org.eclipse.jetty/jetty-util:9.2.10.v20150310" level="project" />
     <orderEntry type="library" name="Leiningen: org.nrepl/incomplete:0.1.0" level="project" />
+    <orderEntry type="library" name="Leiningen: prone:0.8.2" level="project" />
     <orderEntry type="library" name="Leiningen: ring/ring-codec:1.0.0" level="project" />
     <orderEntry type="library" name="Leiningen: ring/ring-core:1.4.0" level="project" />
     <orderEntry type="library" name="Leiningen: ring/ring-devel:1.4.0" level="project" />
