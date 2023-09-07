@@ -1,8 +1,12 @@
 (ns todo-clj.handler.todo
-  (:require [compojure.core :refer [defroutes context GET POST]]
+  (:require [bouncer.validators :as v]
+            [compojure.core :refer [defroutes context GET POST]]
             [todo-clj.db.todo :as todo]
             [todo-clj.util.response :as res]
+            [todo-clj.util.validation :as uv]
             [todo-clj.view.todo :as view]))
+
+(def todo-validator {:title [[v/required :message "TODO を入力してください"]]})
 
 ;(defn todo-index-view [req]
 ;  `("<h1>TODO 一覧</h1>"
@@ -23,10 +27,13 @@
       res/html))
 
 (defn todo-new-post [{:as req :keys [params]}]
-  (if-let [todo (first (todo/save-todo (:title params)))]
-    (-> (res/redirect (str "/todo/" (:id todo)))
-        (assoc :flash {:msg "TODO を正常に追加しました。"})
-        res/html)))
+  (uv/with-fallback #(todo-new (assoc req :errors %)) ;; エラーなら ``todo-new`` を呼び出す
+                    (let [params (uv/validate params todo-validator)]
+                      (if-let [todo (first (todo/save-todo (:title params)))]
+                        (-> (res/redirect (str "/todo/" (:id todo)))
+                            (assoc :flash {:msg "TODO を正常に追加しました。"})
+                            res/html)))))
+
 (defn todo-search [req] "TODO search")
 (defn todo-show [{:as req :keys [params]}]
   (if-let [todo (todo/find-first-todo (Long/parseLong (:todo-id params)))]
@@ -40,13 +47,26 @@
         res/html)))
 
 (defn todo-edit-post [{:as req :keys [params]}]
+  (uv/with-fallback #(todo-edit (assoc req :errors %))
+                    (let [params (uv/validate params todo-validator)
+                          todo-id (Long/parseLong (:todo-id params))]
+                      (if (pos? (first (todo/update-todo todo-id (:title params))))
+                        (-> (res/redirect (str "/todo/" todo-id))
+                            (assoc :flash {:msg "TODO を正常に更新しました"})
+                            res/html)))))
+
+(defn todo-delete [{:as req :keys [params]}]
+  (if-let [todo (todo/find-first-todo (Long/parseLong (:todo-id params)))]
+    (-> (view/todo-delete-view req todo)
+        res/response
+        res/html)))
+
+(defn todo-delete-post [{:as req :keys [params]}]
   (let [todo-id (Long/parseLong (:todo-id params))]
-    (if (pos? (first (todo/update-todo todo-id (:title params))))
-      (-> (res/redirect (str "/todo/" todo-id))
-          (assoc :flash {:msg "TODO を正常に更新しました"})
+    (if (pos? (first (todo/delete-todo todo-id)))
+      (-> (res/redirect "/todo")
+          (assoc :flash {:msg "TODO を正常に削除しました"})
           res/html))))
-(defn todo-delete [req] "TODO delete")
-(defn todo-delete-post [req] "TODO delete post")
 
 (defroutes todo-routes
            (context "/todo" _
