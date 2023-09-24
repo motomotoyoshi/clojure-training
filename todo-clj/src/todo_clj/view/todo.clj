@@ -17,7 +17,6 @@
         [:h2 "TODO 追加"]
         (hf/form-to
           [:post "/todo/new"]
-          (error-messages req) ;; 追加
           [:input {:name :title :placeholder "TODO を入力してください"}]
           [:button.bg-blue "追加する"])]
        (layout/common req)))
@@ -43,7 +42,6 @@
           [:h2 "TODO 編集"]
           (hf/form-to
             [:post (str "/todo/" todo-id "/edit")]
-            (error-messages req) ;; 追加
             [:input {:name :title :value (:title todo)
                      :placeholder "TODO を入力してください"}]
             [:button.bg-blue "更新する"])]

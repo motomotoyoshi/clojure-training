@@ -13,6 +13,9 @@
                  [bouncer "0.3.3"]]
   :plugins [[lein-environ "1.0.1"]]
   :repl-options {:init-ns todo-clj.core}
+  :uberjar-name "todo-clj.jar"
   :profiles
   {:dev {:dependencies [[prone "0.8.2"]]
-         :env {:dev true}}})
+         :env {:dev true}}
+   :uberjar {:aot :all
+             :main todo-clj.main}})
